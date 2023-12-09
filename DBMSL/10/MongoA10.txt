@@ -1,0 +1,256 @@
+ mongo
+MongoDB shell version v3.6.3
+connecting to: mongodb://127.0.0.1:27017
+MongoDB server version: 3.6.3
+Server has startup warnings: 
+2023-10-06T10:37:15.176+0530 I STORAGE  [initandlisten] 
+2023-10-06T10:37:15.176+0530 I STORAGE  [initandlisten] ** WARNING: Using the XFS filesystem is strongly recommended with the WiredTiger storage engine
+2023-10-06T10:37:15.176+0530 I STORAGE  [initandlisten] **          See http://dochub.mongodb.org/core/prodnotes-filesystem
+2023-10-06T10:37:19.810+0530 I CONTROL  [initandlisten] 
+2023-10-06T10:37:19.810+0530 I CONTROL  [initandlisten] ** WARNING: Access control is not enabled for the database.
+2023-10-06T10:37:19.810+0530 I CONTROL  [initandlisten] **          Read and write access to data and configuration is unrestricted.
+2023-10-06T10:37:19.810+0530 I CONTROL  [initandlisten] 
+> db
+test
+> use Asg10
+switched to db Asg10
+> db.createCollection("Books") 
+{ "ok" : 1 }
+> db.Books.insertOne({
+...   Title: 'DBMS',
+...   Description: 'DataBase Management Systems',
+...   BY: 'SPPU',
+...   URL: 'http://google.com/',
+...   Tags: ['Sem5', 'TE'],
+...   Likes: 11
+... });
+{
+	"acknowledged" : true,
+	"insertedId" : ObjectId("651fa7b9ff9eb4e508121001")
+}
+> db.Books.insertOne({
+...   Title: 'TOC Book',
+...   Description: 'Theory of Computation Textbook',
+...   BY: 'John Doe',
+...   URL: 'http://example.com/toc',
+...   Tags: ['Sem5', 'TE', 'TOC'],
+...   Likes: 8
+... });
+{
+	"acknowledged" : true,
+	"insertedId" : ObjectId("651fa7d9ff9eb4e508121002")
+}
+> db.Books.insertOne({
+...   Title: 'SPOS Guide',
+...   Description: 'System Programming and Operating Systems Handbook',
+...   BY: 'Jane Smith',
+...   URL: 'http://example.com/spos',
+...   Tags: ['Sem5', 'TE', 'SPOS'],
+...   Likes: 6
+... });
+{
+	"acknowledged" : true,
+	"insertedId" : ObjectId("651fa7e5ff9eb4e508121003")
+}
+> db.Books.insertOne({
+...   Title: 'CNS Handbook',
+...   Description: 'Computer Network Security Reference',
+...   BY: 'Alice Johnson',
+...   URL: 'http://example.com/cns',
+...   Tags: ['Sem5', 'TE', 'CNS'],
+...   Likes: 7
+... });
+{
+	"acknowledged" : true,
+	"insertedId" : ObjectId("651fa7eeff9eb4e508121004")
+}
+> db.Books.insertOne({
+...   Title: 'IoT Explained',
+...   Description: 'Internet of Things Introduction',
+...   BY: 'Bob Brown',
+...   URL: 'http://example.com/iot',
+...   Tags: ['Sem5', 'TE', 'IoT'],
+...   Likes: 9
+... });
+{
+	"acknowledged" : true,
+	"insertedId" : ObjectId("651fa808ff9eb4e508121005")
+}
+> db.Books.insertOne({
+...   Title: 'New Book',
+...   Description: 'A New Book Description',
+...   BY: 'Author XYZ',
+...   URL: 'http://example.com/new-book',
+...   Tags: ['Sem5', 'TE'],
+...   Likes: 13,
+...   user_name: 'JohnDoe123',
+...   comments: [
+...     {
+...       user_name: 'AliceSmith456',
+...       text: 'Great book! I loved it.',
+...     },
+...     {
+...       user_name: 'BobBrown789',
+...       text: 'Interesting read.',
+...     }
+...   ]
+... });
+{
+	"acknowledged" : true,
+	"insertedId" : ObjectId("651fa868ff9eb4e508121006")
+}
+> db.Books.find({ Title: 'mongodb' }).pretty();
+> db.Books.find({ Title: 'DBMS' }).pretty();
+{
+	"_id" : ObjectId("651fa7b9ff9eb4e508121001"),
+	"Title" : "DBMS",
+	"Description" : "DataBase Management Systems",
+	"BY" : "SPPU",
+	"URL" : "http://google.com/",
+	"Tags" : [
+		"Sem5",
+		"TE"
+	],
+	"Likes" : 11
+}
+> db.Books.find({
+...   BY: 'John Doe',
+...   Title: 'TOC Book'
+... }).pretty();
+{
+	"_id" : ObjectId("651fa7d9ff9eb4e508121002"),
+	"Title" : "TOC Book",
+	"Description" : "Theory of Computation Textbook",
+	"BY" : "John Doe",
+	"URL" : "http://example.com/toc",
+	"Tags" : [
+		"Sem5",
+		"TE",
+		"TOC"
+	],
+	"Likes" : 8
+}
+> db.Books.find({ Likes: { $gt: 5 } }).pretty();
+{
+	"_id" : ObjectId("651fa7b9ff9eb4e508121001"),
+	"Title" : "DBMS",
+	"Description" : "DataBase Management Systems",
+	"BY" : "SPPU",
+	"URL" : "http://google.com/",
+	"Tags" : [
+		"Sem5",
+		"TE"
+	],
+	"Likes" : 11
+}
+{
+	"_id" : ObjectId("651fa7d9ff9eb4e508121002"),
+	"Title" : "TOC Book",
+	"Description" : "Theory of Computation Textbook",
+	"BY" : "John Doe",
+	"URL" : "http://example.com/toc",
+	"Tags" : [
+		"Sem5",
+		"TE",
+		"TOC"
+	],
+	"Likes" : 8
+}
+{
+	"_id" : ObjectId("651fa7e5ff9eb4e508121003"),
+	"Title" : "SPOS Guide",
+	"Description" : "System Programming and Operating Systems Handbook",
+	"BY" : "Jane Smith",
+	"URL" : "http://example.com/spos",
+	"Tags" : [
+		"Sem5",
+		"TE",
+		"SPOS"
+	],
+	"Likes" : 6
+}
+{
+	"_id" : ObjectId("651fa7eeff9eb4e508121004"),
+	"Title" : "CNS Handbook",
+	"Description" : "Computer Network Security Reference",
+	"BY" : "Alice Johnson",
+	"URL" : "http://example.com/cns",
+	"Tags" : [
+		"Sem5",
+		"TE",
+		"CNS"
+	],
+	"Likes" : 7
+}
+{
+	"_id" : ObjectId("651fa808ff9eb4e508121005"),
+	"Title" : "IoT Explained",
+	"Description" : "Internet of Things Introduction",
+	"BY" : "Bob Brown",
+	"URL" : "http://example.com/iot",
+	"Tags" : [
+		"Sem5",
+		"TE",
+		"IoT"
+	],
+	"Likes" : 9
+}
+{
+	"_id" : ObjectId("651fa868ff9eb4e508121006"),
+	"Title" : "New Book",
+	"Description" : "A New Book Description",
+	"BY" : "Author XYZ",
+	"URL" : "http://example.com/new-book",
+	"Tags" : [
+		"Sem5",
+		"TE"
+	],
+	"Likes" : 13,
+	"user_name" : "JohnDoe123",
+	"comments" : [
+		{
+			"user_name" : "AliceSmith456",
+			"text" : "Great book! I loved it."
+		},
+		{
+			"user_name" : "BobBrown789",
+			"text" : "Interesting read."
+		}
+	]
+}
+> db.Books.find({
+...   $and: [
+...     { Likes: { $gt: 10 } },
+...     { $or: [ { Title: 'New Book' }, { BY: 'Author XYZ' } ] }
+...   ]
+... }).pretty();
+{
+	"_id" : ObjectId("651fa868ff9eb4e508121006"),
+	"Title" : "New Book",
+	"Description" : "A New Book Description",
+	"BY" : "Author XYZ",
+	"URL" : "http://example.com/new-book",
+	"Tags" : [
+		"Sem5",
+		"TE"
+	],
+	"Likes" : 13,
+	"user_name" : "JohnDoe123",
+	"comments" : [
+		{
+			"user_name" : "AliceSmith456",
+			"text" : "Great book! I loved it."
+		},
+		{
+			"user_name" : "BobBrown789",
+			"text" : "Interesting read."
+		}
+	]
+}
+> db.Books.updateOne(
+...   { Title: 'New Book' },
+...   { $set: { Title: 'MongoDB Overview' } }
+... );
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+> 
+

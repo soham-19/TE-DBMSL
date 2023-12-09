@@ -1,0 +1,416 @@
+
+test> show dbs
+admin     40.00 KiB
+college   72.00 KiB
+config   108.00 KiB
+local     40.00 KiB
+test> use Asg10
+switched to db Asg10
+Asg10> db.createCollection("Books")
+{ ok: 1 }
+Asg10> db.Books.insertOne(
+... {
+... title : "mongodb",
+... description : "this is book 1",
+... by : "john",
+... url : "mongodb.com",
+... tags : ["mongodb", "mongo", "nosql"],
+... likes : 55
+... }
+... )
+{
+  acknowledged: true,
+  insertedId: ObjectId("654bc9b3fea176ff5b95606c")
+}
+Asg10> db.Books.insertOne( { title: "nosql", description: "this is book 2", by: "adam", url: "nosql.com", tags: ["db", "dbms", "nosql"], likes : 23})
+{
+  acknowledged: true,
+  insertedId: ObjectId("654bc9fcfea176ff5b95606d")
+}
+Asg10> db.Books.insertMany(
+... [
+... {
+... title : "sql", description : "this is book 3", by : "john", url : "sql.com", tags:["sql", "rdbms"],likes : 9
+... }
+... { title : "plsql", description : "this is book 4", by : "hardy", url : "plsql.com", tags:["plsql", "rdbms"],likes : 99}
+Uncaught:
+SyntaxError: Unexpected token, expected "," (6:0)
+
+  4 | title : "sql", description : "this is book 3", by : "john", url : "sql.com", tags:["sql", "rdbms"],likes : 9
+  5 | }
+> 6 | { title : "plsql", description : "this is book 4", by : "hardy", url : "plsql.com", tags:["plsql", "rdbms"],likes : 99}
+    | ^
+  7 |
+
+Asg10> db.Books.insertMany( [ { title : "sql", description : "this is book 3", by : "john", url : "sql.com", tags:["sql", "rdbms"],likes : 9 }, { title : "plsql", description : "this is book 4", by : "hardy", url : "plsql.com", tags:["plsql", "rdbms"],likes : 99},
+... {title:"acid", description:"acid properties", by :  "john", url : "acid.com", tags : ["acid", "properties"], likes : 3}])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId("654bcb1afea176ff5b95606e"),
+    '1': ObjectId("654bcb1afea176ff5b95606f"),
+    '2': ObjectId("654bcb1afea176ff5b956070")
+  }
+}
+Asg10> db.Books.find()
+[
+  {
+    _id: ObjectId("654bc9b3fea176ff5b95606c"),
+    title: 'mongodb',
+    description: 'this is book 1',
+    by: 'john',
+    url: 'mongodb.com',
+    tags: [ 'mongodb', 'mongo', 'nosql' ],
+    likes: 55
+  },
+  {
+    _id: ObjectId("654bc9fcfea176ff5b95606d"),
+    title: 'nosql',
+    description: 'this is book 2',
+    by: 'adam',
+    url: 'nosql.com',
+    tags: [ 'db', 'dbms', 'nosql' ],
+    likes: 23
+  },
+  {
+    _id: ObjectId("654bcb1afea176ff5b95606e"),
+    title: 'sql',
+    description: 'this is book 3',
+    by: 'john',
+    url: 'sql.com',
+    tags: [ 'sql', 'rdbms' ],
+    likes: 9
+  },
+  {
+    _id: ObjectId("654bcb1afea176ff5b95606f"),
+    title: 'plsql',
+    description: 'this is book 4',
+    by: 'hardy',
+    url: 'plsql.com',
+    tags: [ 'plsql', 'rdbms' ],
+    likes: 99
+  },
+  {
+    _id: ObjectId("654bcb1afea176ff5b956070"),
+    title: 'acid',
+    description: 'acid properties',
+    by: 'john',
+    url: 'acid.com',
+    tags: [ 'acid', 'properties' ],
+    likes: 3
+  }
+]
+Asg10> db.Books.insertOne
+[Function: insertOne] AsyncFunction {
+  apiVersions: [ 1, Infinity ],
+  serverVersions: [ '3.2.0', '999.999.999' ],
+  returnsPromise: true,
+  topologies: [ 'ReplSet', 'Sharded', 'LoadBalanced', 'Standalone' ],
+  returnType: { type: 'unknown', attributes: {} },
+  deprecated: false,
+  platforms: [ 'Compass', 'Browser', 'CLI' ],
+  isDirectShellCommand: false,
+  acceptsRawInput: false,
+  shellCommandCompleter: undefined,
+  help: [Function (anonymous)] Help
+}
+Asg10> db.Books.insertOne(
+... {
+... title : "connectivity",
+... description : "this is book 6",
+... by : "ben",
+... url : "connect.com",
+... tags : ["dbconnect", "connectivity"],
+... likes : 34,
+... user : "sohamkulkarni",
+... comments : ["Amazing Book", "Easy to understand"]
+... }
+... )
+{
+  acknowledged: true,
+  insertedId: ObjectId("654bcc8efea176ff5b956071")
+}
+Asg10> db.Books.find()
+[
+  {
+    _id: ObjectId("654bc9b3fea176ff5b95606c"),
+    title: 'mongodb',
+    description: 'this is book 1',
+    by: 'john',
+    url: 'mongodb.com',
+    tags: [ 'mongodb', 'mongo', 'nosql' ],
+    likes: 55
+  },
+  {
+    _id: ObjectId("654bc9fcfea176ff5b95606d"),
+    title: 'nosql',
+    description: 'this is book 2',
+    by: 'adam',
+    url: 'nosql.com',
+    tags: [ 'db', 'dbms', 'nosql' ],
+    likes: 23
+  },
+  {
+    _id: ObjectId("654bcb1afea176ff5b95606e"),
+    title: 'sql',
+    description: 'this is book 3',
+    by: 'john',
+    url: 'sql.com',
+    tags: [ 'sql', 'rdbms' ],
+    likes: 9
+  },
+  {
+    _id: ObjectId("654bcb1afea176ff5b95606f"),
+    title: 'plsql',
+    description: 'this is book 4',
+    by: 'hardy',
+    url: 'plsql.com',
+    tags: [ 'plsql', 'rdbms' ],
+    likes: 99
+  },
+  {
+    _id: ObjectId("654bcb1afea176ff5b956070"),
+    title: 'acid',
+    description: 'acid properties',
+    by: 'john',
+    url: 'acid.com',
+    tags: [ 'acid', 'properties' ],
+    likes: 3
+  },
+  {
+    _id: ObjectId("654bcc8efea176ff5b956071"),
+    title: 'connectivity',
+    description: 'this is book 6',
+    by: 'ben',
+    url: 'connect.com',
+    tags: [ 'dbconnect', 'connectivity' ],
+    likes: 34,
+    user: 'sohamkulkarni',
+    comments: [ 'Amazing Book', 'Easy to understand' ]
+  }
+]
+Asg10> db.Books.find({title : "mongodb"})
+[
+  {
+    _id: ObjectId("654bc9b3fea176ff5b95606c"),
+    title: 'mongodb',
+    description: 'this is book 1',
+    by: 'john',
+    url: 'mongodb.com',
+    tags: [ 'mongodb', 'mongo', 'nosql' ],
+    likes: 55
+  }
+]
+Asg10> db.Books.find({$or : [ title : "mongodb", by : "john"] })
+Uncaught:
+SyntaxError: Unexpected token, expected "," (1:29)
+
+> 1 | db.Books.find({$or : [ title : "mongodb", by : "john"] })
+    |                              ^
+  2 |
+
+Asg10> db.Books.find({$or : [ {title : "mongodb"}, {by : "john"}] })
+[
+  {
+    _id: ObjectId("654bc9b3fea176ff5b95606c"),
+    title: 'mongodb',
+    description: 'this is book 1',
+    by: 'john',
+    url: 'mongodb.com',
+    tags: [ 'mongodb', 'mongo', 'nosql' ],
+    likes: 55
+  },
+  {
+    _id: ObjectId("654bcb1afea176ff5b95606e"),
+    title: 'sql',
+    description: 'this is book 3',
+    by: 'john',
+    url: 'sql.com',
+    tags: [ 'sql', 'rdbms' ],
+    likes: 9
+  },
+  {
+    _id: ObjectId("654bcb1afea176ff5b956070"),
+    title: 'acid',
+    description: 'acid properties',
+    by: 'john',
+    url: 'acid.com',
+    tags: [ 'acid', 'properties' ],
+    likes: 3
+  }
+]
+Asg10> db.Books.find({$and : [ {title : "mongodb"}, {by : "john"}] })
+[
+  {
+    _id: ObjectId("654bc9b3fea176ff5b95606c"),
+    title: 'mongodb',
+    description: 'this is book 1',
+    by: 'john',
+    url: 'mongodb.com',
+    tags: [ 'mongodb', 'mongo', 'nosql' ],
+    likes: 55
+  }
+]
+Asg10> db.Books.find({ likes : {$gt:10} })
+[
+  {
+    _id: ObjectId("654bc9b3fea176ff5b95606c"),
+    title: 'mongodb',
+    description: 'this is book 1',
+    by: 'john',
+    url: 'mongodb.com',
+    tags: [ 'mongodb', 'mongo', 'nosql' ],
+    likes: 55
+  },
+  {
+    _id: ObjectId("654bc9fcfea176ff5b95606d"),
+    title: 'nosql',
+    description: 'this is book 2',
+    by: 'adam',
+    url: 'nosql.com',
+    tags: [ 'db', 'dbms', 'nosql' ],
+    likes: 23
+  },
+  {
+    _id: ObjectId("654bcb1afea176ff5b95606f"),
+    title: 'plsql',
+    description: 'this is book 4',
+    by: 'hardy',
+    url: 'plsql.com',
+    tags: [ 'plsql', 'rdbms' ],
+    likes: 99
+  },
+  {
+    _id: ObjectId("654bcc8efea176ff5b956071"),
+    title: 'connectivity',
+    description: 'this is book 6',
+    by: 'ben',
+    url: 'connect.com',
+    tags: [ 'dbconnect', 'connectivity' ],
+    likes: 34,
+    user: 'sohamkulkarni',
+    comments: [ 'Amazing Book', 'Easy to understand' ]
+  }
+]
+Asg10> db.Books.find( { $and:[ {likes:{$gt:25}} , { $or: [{title : "mongodb"},{by:'john'}]}]} )
+[
+  {
+    _id: ObjectId("654bc9b3fea176ff5b95606c"),
+    title: 'mongodb',
+    description: 'this is book 1',
+    by: 'john',
+    url: 'mongodb.com',
+    tags: [ 'mongodb', 'mongo', 'nosql' ],
+    likes: 55
+  }
+]
+Asg10> db.Books.updateOne({title:"mongodb"}, {$set: {title : "mongodb overview"}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+Asg10> db.Books.deleteOne({title : "nosql"})
+{ acknowledged: true, deletedCount: 1 }
+Asg10> db.Books.find({by:"john"}).limit(2)
+[
+  {
+    _id: ObjectId("654bc9b3fea176ff5b95606c"),
+    title: 'mongodb overview',
+    description: 'this is book 1',
+    by: 'john',
+    url: 'mongodb.com',
+    tags: [ 'mongodb', 'mongo', 'nosql' ],
+    likes: 55
+  },
+  {
+    _id: ObjectId("654bcb1afea176ff5b95606e"),
+    title: 'sql',
+    description: 'this is book 3',
+    by: 'john',
+    url: 'sql.com',
+    tags: [ 'sql', 'rdbms' ],
+    likes: 9
+  }
+]
+Asg10> db.Books.find({by:"john"}).limit(1).skip(1)
+[
+  {
+    _id: ObjectId("654bcb1afea176ff5b95606e"),
+    title: 'sql',
+    description: 'this is book 3',
+    by: 'john',
+    url: 'sql.com',
+    tags: [ 'sql', 'rdbms' ],
+    likes: 9
+  }
+]
+Asg10> db.Books.find().sort({title : 1})
+[
+  {
+    _id: ObjectId("654bcb1afea176ff5b956070"),
+    title: 'acid',
+    description: 'acid properties',
+    by: 'john',
+    url: 'acid.com',
+    tags: [ 'acid', 'properties' ],
+    likes: 3
+  },
+  {
+    _id: ObjectId("654bcc8efea176ff5b956071"),
+    title: 'connectivity',
+    description: 'this is book 6',
+    by: 'ben',
+    url: 'connect.com',
+    tags: [ 'dbconnect', 'connectivity' ],
+    likes: 34,
+    user: 'sohamkulkarni',
+    comments: [ 'Amazing Book', 'Easy to understand' ]
+  },
+  {
+    _id: ObjectId("654bc9b3fea176ff5b95606c"),
+    title: 'mongodb overview',
+    description: 'this is book 1',
+    by: 'john',
+    url: 'mongodb.com',
+    tags: [ 'mongodb', 'mongo', 'nosql' ],
+    likes: 55
+  },
+  {
+    _id: ObjectId("654bcb1afea176ff5b95606f"),
+    title: 'plsql',
+    description: 'this is book 4',
+    by: 'hardy',
+    url: 'plsql.com',
+    tags: [ 'plsql', 'rdbms' ],
+    likes: 99
+  },
+  {
+    _id: ObjectId("654bcb1afea176ff5b95606e"),
+    title: 'sql',
+    description: 'this is book 3',
+    by: 'john',
+    url: 'sql.com',
+    tags: [ 'sql', 'rdbms' ],
+    likes: 9
+  }
+]
+Asg10> var docToSave = {title : "last", description : "the last book ", by : "lastAuthor", url : "last.com", tags:["last"], likes : 25}
+
+Asg10> db.Books.save(docToSave)
+TypeError: db.Books.save is not a function
+Asg10> db.Books.save(docToSave);
+TypeError: db.Books.save is not a function
+Asg10> var docToSave = {title : "last", description : "the last book ", by :
+ "lastAuthor", url : "last.com", tags:["last"], likes : 25}
+
+Asg10> db.Books.save(docToSave);
+TypeError: db.Books.save is not a function
+Asg10> db.Books.insertOne(docToSave);
+{
+  acknowledged: true,
+  insertedId: ObjectId("654bd090fea176ff5b956072")
+}
+Asg10>

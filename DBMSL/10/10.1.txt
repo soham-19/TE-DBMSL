@@ -1,0 +1,378 @@
+Microsoft Windows [Version 10.0.22621.2428]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\Acer>mongosh
+Current Mongosh Log ID: 654c7545d2e3e5c7da60ed66
+Connecting to:          mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.0.2
+Using MongoDB:          7.0.2
+Using Mongosh:          2.0.2
+
+For mongosh info see: https://docs.mongodb.com/mongodb-shell/
+
+
+Asg10> db.createCollection("books")
+{ ok: 1 }
+Asg10> db.books.insertMany(
+... [
+... {title : "book1", description : "description1", by : "author1", url : "www.book1.com", tags : ["tag1", "tag2"], likes : 50},
+... {title : "book2", description : "description2", by : "author2", url : "www.book2.com", tags : ["tag3", "tag4"], likes : 80},
+... {title : "book3", description : "description3", by : "author3", url : "www.book3.com", tags : ["tag5", "tag6"], likes : 60},
+... {title : "book4", description : "description4", by : "author4", url : "www.book4.com", tags : ["tag7", "tag8"], likes : 150},
+... {title : "book5", description : "description5", by : "author5", url : "www.book5.com", tags : ["tag9", "tag10"], likes : 250}
+... ]
+... )
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId("654c7a3ad2e3e5c7da60ed67"),
+    '1': ObjectId("654c7a3ad2e3e5c7da60ed68"),
+    '2': ObjectId("654c7a3ad2e3e5c7da60ed69"),
+    '3': ObjectId("654c7a3ad2e3e5c7da60ed6a"),
+    '4': ObjectId("654c7a3ad2e3e5c7da60ed6b")
+  }
+}
+Asg10> db.books.insertOne(
+... {title: "book6", description:"description6", by:"author6",url:"www.book6.com",tags:["tag1","tag12"],likes:125,username:"user1",comments:["comment1","comment2"]}
+... )
+{
+  acknowledged: true,
+  insertedId: ObjectId("654c7caed2e3e5c7da60ed6c")
+}
+Asg10> db.books.find()
+[
+  {
+    _id: ObjectId("654c7a3ad2e3e5c7da60ed67"),
+    title: 'book1',
+    description: 'description1',
+    by: 'author1',
+    url: 'www.book1.com',
+    tags: [ 'tag1', 'tag2' ],
+    likes: 50
+  },
+  {
+    _id: ObjectId("654c7a3ad2e3e5c7da60ed68"),
+    title: 'book2',
+    description: 'description2',
+    by: 'author2',
+    url: 'www.book2.com',
+    tags: [ 'tag3', 'tag4' ],
+    likes: 80
+  },
+  {
+    _id: ObjectId("654c7a3ad2e3e5c7da60ed69"),
+    title: 'book3',
+    description: 'description3',
+    by: 'author3',
+    url: 'www.book3.com',
+    tags: [ 'tag5', 'tag6' ],
+    likes: 60
+  },
+  {
+    _id: ObjectId("654c7a3ad2e3e5c7da60ed6a"),
+    title: 'book4',
+    description: 'description4',
+    by: 'author4',
+    url: 'www.book4.com',
+    tags: [ 'tag7', 'tag8' ],
+    likes: 150
+  },
+  {
+    _id: ObjectId("654c7a3ad2e3e5c7da60ed6b"),
+    title: 'book5',
+    description: 'description5',
+    by: 'author5',
+    url: 'www.book5.com',
+    tags: [ 'tag9', 'tag10' ],
+    likes: 250
+  },
+  {
+    _id: ObjectId("654c7caed2e3e5c7da60ed6c"),
+    title: 'book6',
+    description: 'description6',
+    by: 'author6',
+    url: 'www.book6.com',
+    tags: [ 'tag1', 'tag12' ],
+    likes: 125,
+    username: 'user1',
+    comments: [ 'comment1', 'comment2' ]
+  }
+]
+Asg10> db.books.find({title:"book3"})
+[
+  {
+    _id: ObjectId("654c7a3ad2e3e5c7da60ed69"),
+    title: 'book3',
+    description: 'description3',
+    by: 'author3',
+    url: 'www.book3.com',
+    tags: [ 'tag5', 'tag6' ],
+    likes: 60
+  }
+]
+Asg10> db.books.find({$or[{title:"book1"},{by:"author4"}]})
+Uncaught:
+SyntaxError: Unexpected token, expected "," (1:18)
+
+> 1 | db.books.find({$or[{title:"book1"},{by:"author4"}]})
+    |                   ^
+  2 |
+
+Asg10> db.books.find({$or:[{title:"book1"},{by:"author4"}]})
+[
+  {
+    _id: ObjectId("654c7a3ad2e3e5c7da60ed67"),
+    title: 'book1',
+    description: 'description1',
+    by: 'author1',
+    url: 'www.book1.com',
+    tags: [ 'tag1', 'tag2' ],
+    likes: 50
+  },
+  {
+    _id: ObjectId("654c7a3ad2e3e5c7da60ed6a"),
+    title: 'book4',
+    description: 'description4',
+    by: 'author4',
+    url: 'www.book4.com',
+    tags: [ 'tag7', 'tag8' ],
+    likes: 150
+  }
+]
+Asg10> db.books.find({$and:[{title:"book1"},{by:"author4"}]})
+
+Asg10> db.books.find({$and:[{title:"book1"},{by:"author1"}]})
+[
+  {
+    _id: ObjectId("654c7a3ad2e3e5c7da60ed67"),
+    title: 'book1',
+    description: 'description1',
+    by: 'author1',
+    url: 'www.book1.com',
+    tags: [ 'tag1', 'tag2' ],
+    likes: 50
+  }
+]
+Asg10> db.books.find({$gt:{likes:100}})
+MongoServerError: unknown top level operator: $gt. If you have a field name that starts with a '$' symbol, consider using $getField or $setField.
+Asg10> db.books.find({likes:{$gt:100}})
+[
+  {
+    _id: ObjectId("654c7a3ad2e3e5c7da60ed6a"),
+    title: 'book4',
+    description: 'description4',
+    by: 'author4',
+    url: 'www.book4.com',
+    tags: [ 'tag7', 'tag8' ],
+    likes: 150
+  },
+  {
+    _id: ObjectId("654c7a3ad2e3e5c7da60ed6b"),
+    title: 'book5',
+    description: 'description5',
+    by: 'author5',
+    url: 'www.book5.com',
+    tags: [ 'tag9', 'tag10' ],
+    likes: 250
+  },
+  {
+    _id: ObjectId("654c7caed2e3e5c7da60ed6c"),
+    title: 'book6',
+    description: 'description6',
+    by: 'author6',
+    url: 'www.book6.com',
+    tags: [ 'tag1', 'tag12' ],
+    likes: 125,
+    username: 'user1',
+    comments: [ 'comment1', 'comment2' ]
+  }
+]
+Asg10> db.books.find({$and:[{likes:{$gt:100}},{$or:[{title:"book1"},{by:"author5"}]}]})
+[
+  {
+    _id: ObjectId("654c7a3ad2e3e5c7da60ed6b"),
+    title: 'book5',
+    description: 'description5',
+    by: 'author5',
+    url: 'www.book5.com',
+    tags: [ 'tag9', 'tag10' ],
+    likes: 250
+  }
+]
+Asg10> db.books.updateOne({title:"book1"},{$set:{title:"mongodb"}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+Asg10> db.books.find({title:"mongodb"})
+[
+  {
+    _id: ObjectId("654c7a3ad2e3e5c7da60ed67"),
+    title: 'mongodb',
+    description: 'description1',
+    by: 'author1',
+    url: 'www.book1.com',
+    tags: [ 'tag1', 'tag2' ],
+    likes: 50
+  }
+]
+Asg10> db.books.deleteOne({title:"book4"})
+{ acknowledged: true, deletedCount: 1 }
+Asg10> db.books.updateOne({title:"book2"},{$set:{by:"author1"}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+Asg10> db.books.updateOne({title:"book3"},{$set:{by:"author1"}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+Asg10> db.books.find({by:"author1"})
+[
+  {
+    _id: ObjectId("654c7a3ad2e3e5c7da60ed67"),
+    title: 'mongodb',
+    description: 'description1',
+    by: 'author1',
+    url: 'www.book1.com',
+    tags: [ 'tag1', 'tag2' ],
+    likes: 50
+  },
+  {
+    _id: ObjectId("654c7a3ad2e3e5c7da60ed68"),
+    title: 'book2',
+    description: 'description2',
+    by: 'author1',
+    url: 'www.book2.com',
+    tags: [ 'tag3', 'tag4' ],
+    likes: 80
+  },
+  {
+    _id: ObjectId("654c7a3ad2e3e5c7da60ed69"),
+    title: 'book3',
+    description: 'description3',
+    by: 'author1',
+    url: 'www.book3.com',
+    tags: [ 'tag5', 'tag6' ],
+    likes: 60
+  }
+]
+Asg10> db.books.find({by:"author1"}).limit(2)
+[
+  {
+    _id: ObjectId("654c7a3ad2e3e5c7da60ed67"),
+    title: 'mongodb',
+    description: 'description1',
+    by: 'author1',
+    url: 'www.book1.com',
+    tags: [ 'tag1', 'tag2' ],
+    likes: 50
+  },
+  {
+    _id: ObjectId("654c7a3ad2e3e5c7da60ed68"),
+    title: 'book2',
+    description: 'description2',
+    by: 'author1',
+    url: 'www.book2.com',
+    tags: [ 'tag3', 'tag4' ],
+    likes: 80
+  }
+]
+Asg10> db.books.find({by:"author1"}).limit(2).skip(1)
+[
+  {
+    _id: ObjectId("654c7a3ad2e3e5c7da60ed68"),
+    title: 'book2',
+    description: 'description2',
+    by: 'author1',
+    url: 'www.book2.com',
+    tags: [ 'tag3', 'tag4' ],
+    likes: 80
+  },
+  {
+    _id: ObjectId("654c7a3ad2e3e5c7da60ed69"),
+    title: 'book3',
+    description: 'description3',
+    by: 'author1',
+    url: 'www.book3.com',
+    tags: [ 'tag5', 'tag6' ],
+    likes: 60
+  }
+]
+Asg10> db.books.find().sort({title:1})
+[
+  {
+    _id: ObjectId("654c7a3ad2e3e5c7da60ed68"),
+    title: 'book2',
+    description: 'description2',
+    by: 'author1',
+    url: 'www.book2.com',
+    tags: [ 'tag3', 'tag4' ],
+    likes: 80
+  },
+  {
+    _id: ObjectId("654c7a3ad2e3e5c7da60ed69"),
+    title: 'book3',
+    description: 'description3',
+    by: 'author1',
+    url: 'www.book3.com',
+    tags: [ 'tag5', 'tag6' ],
+    likes: 60
+  },
+  {
+    _id: ObjectId("654c7a3ad2e3e5c7da60ed6b"),
+    title: 'book5',
+    description: 'description5',
+    by: 'author5',
+    url: 'www.book5.com',
+    tags: [ 'tag9', 'tag10' ],
+    likes: 250
+  },
+  {
+    _id: ObjectId("654c7caed2e3e5c7da60ed6c"),
+    title: 'book6',
+    description: 'description6',
+    by: 'author6',
+    url: 'www.book6.com',
+    tags: [ 'tag1', 'tag12' ],
+    likes: 125,
+    username: 'user1',
+    comments: [ 'comment1', 'comment2' ]
+  },
+  {
+    _id: ObjectId("654c7a3ad2e3e5c7da60ed67"),
+    title: 'mongodb',
+    description: 'description1',
+    by: 'author1',
+    url: 'www.book1.com',
+    tags: [ 'tag1', 'tag2' ],
+    likes: 50
+  }
+]
+Asg10> tee s.txt
+Uncaught:
+SyntaxError: Missing semicolon. (1:3)
+
+> 1 | tee s.txt
+    |    ^
+  2 |
+
+Asg10> var variable = {title:"title7", description:"description7",by:"author7",url:"www.book7.com",tags:["tag13","tag14"], likes : 189}
+
+Asg10> db.books.insertOne(variable)
+{
+  acknowledged: true,
+  insertedId: ObjectId("654c813dd2e3e5c7da60ed6d")
+}
+Asg10>
+(To exit, press Ctrl+C again or Ctrl+D or type .exit)
+Asg10>

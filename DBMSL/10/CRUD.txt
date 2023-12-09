@@ -1,0 +1,230 @@
+
+student> db.student.insertMany
+[Function: insertMany] AsyncFunction {
+  apiVersions: [ 1, Infinity ],
+  serverVersions: [ '3.2.0', '999.999.999' ],
+  returnsPromise: true,
+  topologies: [ 'ReplSet', 'Sharded', 'LoadBalanced', 'Standalone' ],
+  returnType: { type: 'unknown', attributes: {} },
+  deprecated: false,
+  platforms: [ 'Compass', 'Browser', 'CLI' ],
+  isDirectShellCommand: false,
+  acceptsRawInput: false,
+  shellCommandCompleter: undefined,
+  help: [Function (anonymous)] Help
+}
+student> db.student.insertMany(
+... [
+... {name : 'adam', marks : 56, city : 'Nashik'},
+... {name : 'eve', marks : 86, city : 'Pune'},
+... {name : 'catlyn', marks : 76, city : 'Mumbai'},
+... {name : 'bob', marks : 96, city : 'Nashik'},
+... {name : 'ben', marks : 46, city : 'Pune'}
+... ]
+... )
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId("654c5052843218872f95abbb"),
+    '1': ObjectId("654c5052843218872f95abbc"),
+    '2': ObjectId("654c5052843218872f95abbd"),
+    '3': ObjectId("654c5052843218872f95abbe"),
+    '4': ObjectId("654c5052843218872f95abbf")
+  }
+}
+student> db.student.find(
+... { marks : {$gt:75}}
+... )
+[
+  {
+    _id: ObjectId("654c5052843218872f95abbc"),
+    name: 'eve',
+    marks: 86,
+    city: 'Pune'
+  },
+  {
+    _id: ObjectId("654c5052843218872f95abbd"),
+    name: 'catlyn',
+    marks: 76,
+    city: 'Mumbai'
+  },
+  {
+    _id: ObjectId("654c5052843218872f95abbe"),
+    name: 'bob',
+    marks: 96,
+    city: 'Nashik'
+  }
+]
+student> db.student.find(
+... {city: {$in:['Mumbai','Pune']}}
+... )
+[
+  {
+    _id: ObjectId("654c5052843218872f95abbc"),
+    name: 'eve',
+    marks: 86,
+    city: 'Pune'
+  },
+  {
+    _id: ObjectId("654c5052843218872f95abbd"),
+    name: 'catlyn',
+    marks: 76,
+    city: 'Mumbai'
+  },
+  {
+    _id: ObjectId("654c5052843218872f95abbf"),
+    name: 'ben',
+    marks: 46,
+    city: 'Pune'
+  }
+]
+student> db.student.find(
+... { $or: [ {marks:{$gt:75}}, {city : 'Nashik'} ] }
+... )
+[
+  {
+    _id: ObjectId("654c5052843218872f95abbb"),
+    name: 'adam',
+    marks: 56,
+    city: 'Nashik'
+  },
+  {
+    _id: ObjectId("654c5052843218872f95abbc"),
+    name: 'eve',
+    marks: 86,
+    city: 'Pune'
+  },
+  {
+    _id: ObjectId("654c5052843218872f95abbd"),
+    name: 'catlyn',
+    marks: 76,
+    city: 'Mumbai'
+  },
+  {
+    _id: ObjectId("654c5052843218872f95abbe"),
+    name: 'bob',
+    marks: 96,
+    city: 'Nashik'
+  }
+]
+student> db.student.updateOne({name : 'adam'},{marks:99})
+MongoInvalidArgumentError: Update document requires atomic operators
+student> db.student.updateOne({name : 'adam'},{$set{marks:99}})
+Uncaught:
+SyntaxError: Unexpected token, expected "," (1:42)
+
+> 1 | db.student.updateOne({name : 'adam'},{$set{marks:99}})
+    |                                           ^
+  2 |
+
+student> db.student.updateOne({name : 'adam'},{$set[marks:99]})
+Uncaught:
+SyntaxError: Unexpected token, expected "," (1:42)
+
+> 1 | db.student.updateOne({name : 'adam'},{$set[marks:99]})
+    |                                           ^
+  2 |
+
+student> db.student.updateOne({name : 'adam'},{$set : {marks:99}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+student> db.student.updateMany({city:'Nashik'},{$set:{city:'Nashik Road'}})
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 2,
+  modifiedCount: 2,
+  upsertedCount: 0
+}
+student> db.student.find({city:'Nashik Road'})
+[
+  {
+    _id: ObjectId("654c5052843218872f95abbb"),
+    name: 'adam',
+    marks: 99,
+    city: 'Nashik Road'
+  },
+  {
+    _id: ObjectId("654c5052843218872f95abbe"),
+    name: 'bob',
+    marks: 96,
+    city: 'Nashik Road'
+  }
+]
+student> db.student.insertOne( {name:'farah', performance : {marks : 88, grade : 'A'}})
+{
+  acknowledged: true,
+  insertedId: ObjectId("654c56ce843218872f95abc0")
+}
+student> db.student.find({marks:88})
+
+student> db.student.find({performance.marks:88})
+Uncaught:
+SyntaxError: Unexpected token, expected "," (1:28)
+
+> 1 | db.student.find({performance.marks:88})
+    |                             ^
+  2 |
+
+student> db.student.find({'performance.marks':88})
+[
+  {
+    _id: ObjectId("654c56ce843218872f95abc0"),
+    name: 'farah',
+    performance: { marks: 88, grade: 'A' }
+  }
+]
+student> db.student.deleteOne({city:'mumbai'})
+{ acknowledged: true, deletedCount: 0 }
+student> db.student.deleteOne({city:'Mumbai'})
+{ acknowledged: true, deletedCount: 1 }
+student> db.student.deleteMany({marks:{$lt:75}})
+{ acknowledged: true, deletedCount: 1 }
+student> db.student.find()
+[
+  {
+    _id: ObjectId("654c5052843218872f95abbb"),
+    name: 'adam',
+    marks: 99,
+    city: 'Nashik Road'
+  },
+  {
+    _id: ObjectId("654c5052843218872f95abbc"),
+    name: 'eve',
+    marks: 86,
+    city: 'Pune'
+  },
+  {
+    _id: ObjectId("654c5052843218872f95abbe"),
+    name: 'bob',
+    marks: 96,
+    city: 'Nashik Road'
+  },
+  {
+    _id: ObjectId("654c56ce843218872f95abc0"),
+    name: 'farah',
+    performance: { marks: 88, grade: 'A' }
+  }
+]
+student> db.student.deleteMany()
+MongoshInvalidInputError: [COMMON-10001] Missing required argument at position 0 (Collection.deleteMany)
+student> db.student.deleteMany({})
+{ acknowledged: true, deletedCount: 4 }
+student> db.find()
+TypeError: db.find is not a function
+student> db.student.find()
+
+student> db.dropDatabase()
+{ ok: 1, dropped: 'student' }
+student> show dbs
+Asg10     72.00 KiB
+admin     40.00 KiB
+college   72.00 KiB
+config   108.00 KiB
+local     40.00 KiB
+student>

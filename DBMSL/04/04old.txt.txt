@@ -1,0 +1,42 @@
+create table borrower38(roll_no int, name varchar(20), issue_date date, title varchar(30),status varchar(1), primary key(roll_no));
+insert into borrower38 values(1,'Soham',TO_DATE('2021/01/01','yyyy/mm/dd'),'DBMS Korth','I');
+select * from borrower38;
+INSERT INTO borrower38 (roll_no, name, issue_date, title, status)
+VALUES (2, 'Ritesh', TO_DATE('2021/02/15', 'yyyy/mm/dd'), 'TOC', 'I');
+INSERT INTO borrower38 (roll_no, name, issue_date, title, status)
+VALUES (3, 'Tejas', TO_DATE('2021/03/20', 'yyyy/mm/dd'), 'CNS', 'I');
+INSERT INTO borrower38 (roll_no, name, issue_date, title, status)
+VALUES (4, 'Shreya', TO_DATE('2021/04/10', 'yyyy/mm/dd'), 'SPOS', 'I');
+
+create table fine38(roll_no int, Date_fine date, Amt int);
+
+declare
+    returndate date;
+    issuedate date;
+    days integer;
+    fine number(10,2);
+    Roll int := 4;
+
+begin
+
+    select issue_date into issuedate from borrower38 where roll_no = Roll;
+    DBMS_OUTPUT.PUT_LINE(issuedate);
+    DBMS_OUTPUT.PUT_LINE(sysdate);
+    days := (to_date(sysdate,'dd/mm/yyyy')-to_date(issuedate,'dd/mm/yyyy'));
+    DBMS_OUTPUT.PUT_LINE(days);
+   
+    if days>30 then
+        fine := 50*days;
+        insert into fine38 values(Roll,sysdate,fine);
+        update borrower38 set status = 'R' where roll_no = Roll;
+    end if;
+
+    if days>=15 and days<=30 then
+        fine := 5*days;
+        insert into fine38 values(Roll,sysdate,fine);
+        update borrower38 set status = 'R' where roll_no = Roll;
+    end if;
+
+end;
+
+select * from fine38;
